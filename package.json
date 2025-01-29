@@ -1,0 +1,27 @@
+{
+  "name": "bot_telegramm",
+  "version": "1.0.0",
+  "description": "\"Telegram-бот для магазина индюшиной продукции, который помогает пользователям узнать о товарах и акциях.\"",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "src/chatTelegramm.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/botTelegramShop.js",
+    "dev": "tsc && nodemon dist/botTelegramShop.js",
+    "watch-ts": "tsc -w"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "node-telegram-bot-api": "^0.66.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
