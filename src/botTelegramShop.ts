@@ -6,7 +6,7 @@ import { helpHandler } from './handlers/helpHandlers';
 import { aboutHandler } from './handlers/aboutHandler';
 import { contactHandler } from './handlers/contactHandler';
 import { welcomeHandler } from './handlers/mainMenuHandler';
-import { musicHandler } from './handlers/musicHandler';
+import { handleMusic } from './handlers/musicHandler';
 
 const bot = new TelegramBot(config.token, config.bot);
 
@@ -40,7 +40,7 @@ bot.on('message', async (msg: TelegramBot.Message) => {
                 await welcomeHandler(bot, chatId);
                 break;
             case config.buttons.music:
-                await musicHandler(bot, chatId);
+                await handleMusic(bot, chatId); 
                 break;
         }
     } catch (error) {
