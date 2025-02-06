@@ -1,25 +1,43 @@
-import TelegramBot from 'node-telegram-bot-api';
-import { config } from '../config/config';
-import { createMainKeyboard } from '../keyboards/keyboard';
+import TelegramBot from "node-telegram-bot-api";
+import { config } from "../config/config";
+import { createMainKeyboard } from "../keyboards/keyboard";
 
-export const musicHandler = async (bot: TelegramBot, chatId: number) => {
-    try {
-        // Сначала отправляем сообщение
-        await bot.sendMessage(chatId, 'Наша фоновая музыка 🎵', {
-            reply_markup: createMainKeyboard()
+const tracks = [
+    { title: "Gromee feat. Mahan Moin - Spirit", fileId: "src/assets/music/Gromee feat. Mahan Moin - Spirit.mp3" },
+    { title: "Maxx Play feat. Grove Park - Cocoon Beach", fileId: "src/assets/music/Maxx Play feat. Grove Park - Cocoon Beach.mp3" }
+];
+
+export const handleMusic = (bot: TelegramBot, chatId:number) => {
+    bot.onText(/\/music/, (msg: TelegramBot.Message) => {
+        const chatId = msg.chat.id;
+        const trackList = tracks.map((track, index) => `${index + 1}. ${track.title}`).join("\n");
+        bot.sendMessage(chatId, `Выберите трек:\n${trackList}`, {
+            reply_markup: {
+                keyboard: tracks.map((track, index) => [{ text: `${index + 1}. ${track.title}` }]),
+                one_time_keyboard: true,
+                resize_keyboard: true
+            }
         });
+    });
 
-        // Отправляем аудио используя file_unique_id
-        const audioFileId = 'AgADYW0AAiOMAUk'; // ID вашего аудиофайла
+    bot.on('message', (msg) => {
+        const chatId = msg.chat.id;
+        const match = msg.text?.match(/^(\d+)\./);
+        const selectedTrackIndex = match ? parseInt(match[1]) - 1 : -1;
 
-        await bot.sendAudio(chatId, audioFileId, {
-            caption: '🎵 Alis Shuka - Not About Us',
-            title: 'Not About Us',
-            performer: 'Alis Shuka'
-        });
-
-    } catch (error) {
-        console.error('Ошибка при отправке музыки:', error);
-        await bot.sendMessage(chatId, 'Извините, произошла ошибка при воспроизведении музыки');
-    }
-};   
+        if (selectedTrackIndex >= 0 && selectedTrackIndex < tracks.length) {
+            const selectedTrack = tracks[selectedTrackIndex];
+            if (selectedTrack.fileId) {
+                bot.sendMessage(chatId, `Теперь воспроизводится: ${selectedTrack.title}`);
+                // Добавляем параметры для отправки аудио
+                bot.sendAudio(chatId, selectedTrack.fileId, {
+                    caption: selectedTrack.title,
+                    title: selectedTrack.title,
+                    performer: 'Unknown'
+                });
+            } else {
+                bot.sendMessage(chatId, "Ошибка: файл не найден.");
+            }
+        }
+    });
+};
