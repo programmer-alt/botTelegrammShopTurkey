@@ -1,62 +1,51 @@
 import TelegramBot from 'node-telegram-bot-api';
-import dotenv from 'dotenv';
+import { config } from './config/config';
+import { startHandler } from './handlers/startHandler';
+import { handleProducts } from './handlers/productHandler';
+import { helpHandler } from './handlers/helpHandlers';
+import { aboutHandler } from './handlers/aboutHandler';
+import { contactHandler } from './handlers/contactHandler';
+import { welcomeHandler } from './handlers/mainMenuHandler';
+import { musicHandler } from './handlers/musicHandler';
 
-dotenv.config();
+const bot = new TelegramBot(config.token, config.bot);
 
-interface Product {
-    id: number;
-    name: string;
-    image: string;
-}
-
-interface Keyboard {
-    reply_markup: {
-        keyboard: TelegramBot.KeyboardButton[][];
-        resize_keyboard: boolean;
+bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
+    try {
+        await startHandler(bot, msg.chat.id);
+    } catch (error) {
+        console.error('Ошибка в обработчике /start:', error);
     }
-}
+});
 
-const token = process.env.TELEGRAM_BOT_TOKEN;
-console.log('Запущен бот телеграмм '); // Для отладки
-if (!token) {
-    throw new Error('Телеграм бот не найден');
-}
+bot.on('message', async (msg: TelegramBot.Message) => {
+    try {
+        const chatId = msg.chat.id;
+        const text = msg.text;
 
-const bot = new TelegramBot(token, { polling: true });
-
-const products = [
-    {id: 1, name: 'Пельмени'},
-    {id: 2, name: 'Чебуреки'},
-    {id: 3, name: 'Котлеты'},
-    {id: 4, name: 'Манты'}
-]
-
-function createKeyboard(): Keyboard {
-    const productsButton = products.map(product => [{ text: product.name }]);
-    return {
-        reply_markup: {
-            keyboard: productsButton,
-            resize_keyboard: true
+        switch(text) {
+            case config.buttons.products:
+                await handleProducts(bot, chatId);
+                break;
+            case config.buttons.help:
+                await helpHandler(bot, chatId);
+                break;
+            case config.buttons.about:
+                await aboutHandler(bot, chatId);
+                break;
+            case config.buttons.contacts:
+                await contactHandler(bot, chatId);
+                break;
+            case config.buttons.mainMenu:
+                await welcomeHandler(bot, chatId);
+                break;
+            case config.buttons.music:
+                await musicHandler(bot, chatId);
+                break;
         }
-    };
-}
-
-bot.onText(/\/start/, (msg: TelegramBot.Message) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Добро пожаловать в магазин Индюшенок', createKeyboard());
+    } catch (error) {
+        console.error('Ошибка в обработчике сообщений:', error);
+    }
 });
 
-bot.onText(/\/help/, (msg: TelegramBot.Message) => {
-    const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Привет, я помощник бот-магазин!', createKeyboard());
-});
-
-bot.onText(/\/products/, (msg: TelegramBot.Message) => {
-    const chatId = msg.chat.id;
-    const productlist = products.map(product => `${product.name}`).join('\n');
-    bot.sendMessage(chatId, `Наши продукты: \n${productlist}`, createKeyboard());
-});
-
-
-
-
+console.log('Бот запущен и готов к работе!');
