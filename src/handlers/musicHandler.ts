@@ -23,8 +23,8 @@ const tracks = [
 ];
 
 export const handleMusic = (bot: TelegramBot, chatId: number) => {
-  bot.onText(/\/music/, (msg: TelegramBot.Message) => {
-    const chatId = msg.chat.id;
+ 
+  
     const trackList = tracks
       .map((track, index) => `${index + 1}. ${track.title}`)
       .join("\n");
@@ -35,7 +35,7 @@ export const handleMusic = (bot: TelegramBot, chatId: number) => {
         resize_keyboard: true,
       },
     });
-  });
+  
 
   bot.on("message", async  (msg: TelegramBot.Message) => {
     const match = msg.text?.match(/^(\d+)\./);
