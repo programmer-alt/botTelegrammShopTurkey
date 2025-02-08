@@ -18,11 +18,19 @@ bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
     }
 });
 
+bot.onText(/\/music/, async (msg: TelegramBot.Message)=> {
+    try {
+        await handleMusic(bot, msg.chat.id);
+    }
+    catch (error) {
+        console.log('Ошибка в обработчике /music:', error);
+    }
+});
+
 bot.on('message', async (msg: TelegramBot.Message) => {
     try {
         const chatId = msg.chat.id;
         const text = msg.text;
-
         switch(text) {
             case config.buttons.products:
                 await handleProducts(bot, chatId);
