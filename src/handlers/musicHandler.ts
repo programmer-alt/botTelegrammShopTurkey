@@ -59,7 +59,7 @@ export const handleTrackSelection = (bot: TelegramBot, msg: TelegramBot.Message)
     bot.sendMessage(chatId, "⬆️  Загрузка музыки, пожалуйста, подождите...➡️");
 
     bot.sendAudio(chatId, selectedTrack.fileId, {
-      caption: selectedTrack.title,
+      
       title: selectedTrack.title,
       performer: performerTrackSelection(selectedTrack.title) ?? '',
     }).then(() => {

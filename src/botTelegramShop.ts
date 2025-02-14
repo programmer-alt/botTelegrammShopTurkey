@@ -6,8 +6,8 @@ import { helpHandler } from "./handlers/helpHandlers";
 import { aboutHandler } from "./handlers/aboutHandler";
 import { contactHandler } from "./handlers/contactHandler";
 import { welcomeHandler } from "./handlers/mainMenuHandler";
-import { registerMusicHandlers } from "./handlers/musicHandler";
-import { createMainKeyboard } from "./keyboards/keyboard";
+import { registerMusicHandlers, sendTrackList } from "./handlers/musicHandler";
+
 
 const bot = new TelegramBot(config.token, config.bot);
 
@@ -46,10 +46,14 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       case config.buttons.mainMenu:
         await welcomeHandler(bot, chatId);
         break;
+      case config.buttons.music:
+        await sendTrackList(bot,chatId);
+        break;
     }
   } catch (error) {
     console.error("Ошибка в обработчике сообщений:", error);
   }
 });
+
 
 console.log("Бот запущен и готов к работе!");
