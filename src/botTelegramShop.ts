@@ -7,12 +7,18 @@ import { aboutHandler } from "./handlers/aboutHandler";
 import { contactHandler } from "./handlers/contactHandler";
 import { welcomeHandler } from "./handlers/mainMenuHandler";
 import { registerMusicHandlers, sendTrackList } from "./handlers/musicHandler";
+import {messageHandler} from './handlers/messageHandler';
+import {aboutNavHandler} from './navigationHandler/aboutNavHandler';
+import { productNavNandler } from './navigationHandler/productNavNandler';
 
 
 const bot = new TelegramBot(config.token, config.bot);
 
 // Регистрация обработчиков
 registerMusicHandlers(bot);
+messageHandler(bot)
+aboutNavHandler(bot)
+productNavNandler(bot)
 
 // Обработчик команды /start
 bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
@@ -26,8 +32,7 @@ bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
 // Обработчик сообщений (кнопки)
 bot.on("message", async (msg: TelegramBot.Message) => {
   try {
-    const chatId = msg.chat.id;
-    const text = msg.text;
+    const { chat: { id: chatId }, text } = msg;
 
     // Обработка кнопок
     switch (text) {
@@ -49,6 +54,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       case config.buttons.music:
         await sendTrackList(bot,chatId);
         break;
+  
     }
   } catch (error) {
     console.error("Ошибка в обработчике сообщений:", error);
