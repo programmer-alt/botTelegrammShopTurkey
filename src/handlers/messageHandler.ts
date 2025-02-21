@@ -15,7 +15,7 @@ bot.on('message', (msg: TelegramBot.Message) => {
       bot.sendMessage(chatId, answer)
     }
   } catch (error) {
-    console.error('Error handling message:', error);
+    console.error(' Ошибка обработчика сообщений messageHandler :', error);
   }
 });
 
