@@ -9,8 +9,7 @@ export const createMainKeyboard = (): Keyboard => {
             [{ text: config.buttons.about }],
             [{ text: config.buttons.contacts }],
             [{ text: config.buttons.mainMenu }],
-            [{ text: config.buttons.music }],
-           
+            [{ text: config.buttons.music }],    
 
         ],
         resize_keyboard: true

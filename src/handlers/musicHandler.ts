@@ -1,10 +1,30 @@
 import TelegramBot from "node-telegram-bot-api";
 import { config } from "../config/config";
 import { musicKeyboard } from "../keyboards/musicKeyboard";
+import * as fs from 'fs/promises';
+import path from "path";
 
+async function getTrackFromDirectory () {
+   // Получаем путь к директории с музыкой
+   const musicDir = path.join(__dirname, '../assets/music');
+   try {
+    // читаем содержимое директории
+    const files = await fs.readdir(musicDir);
+    // фильтруем только mp3-файлы
+    return  files
+    .filter(file => file.endsWith('.mp3'))
+    .map(file => ({
+      title: path.parse(file).name ,// имя файла без расширения
+      fileId: path.join(musicDir, file), // полный путь к файлу
+    }));
+   } catch (error){
+    console.log(' Ошибка при чтении директории с музыкой', error);
+    return [];
+   }
+}
+const tracks: { title: string; fileId: string}[] = [
 // Определяем массив с информацией о треках
-const tracks = [
-  {
+{
     title: "Bobina - The Unforgiven (Airplay Mix)",
     fileId: "src/assets/music/Bobina - The Unforgiven (Airplay Mix).mp3",
   },
@@ -32,34 +52,40 @@ const performerTrackSelection = (trackTitle: string) => {
 };
 
 // Функция для отправки списка треков
-export const sendTrackList = (bot: TelegramBot, chatId: number) => {
-  const trackList = tracks
-    .map((track, index) => `${index + 1}. ${track.title}`)
-    .join("\n");
+export const sendTrackList = async (bot: TelegramBot, chatId: number) => {
+  try {
+    
 
-  bot.sendMessage(chatId, config.messages.music + "\n" + trackList, {
-    reply_markup: {
-      keyboard: musicKeyboard(tracks),
-      one_time_keyboard: true,
-      resize_keyboard: true,
-    },
-  });
+    const trackList = tracks
+      .map((track, index) => `${index + 1}. ${track.title}`)
+      .join('\n');
+
+    bot.sendMessage(chatId, `${config.messages.music  }\n${  trackList}`, {
+      reply_markup: {
+        keyboard: musicKeyboard(tracks),
+        one_time_keyboard: true,
+        resize_keyboard: true,
+      },
+    });
+  } catch (error) {
+    console.error('Ошибка при отправке сообщения:', error);
+  }
 };
 
 // Функция для обработки выбора трека
 export const handleTrackSelection = (bot: TelegramBot, msg: TelegramBot.Message) => {
   const chatId = msg.chat.id;
-  const text = msg.text;
+  const {text} = msg;
 
   const match = text?.match(/^(\d+)\./);
-  const selectedTrackIndex = match ? parseInt(match[1]) - 1 : -1;
+  const selectedTrackIndex = match ? parseInt(match[1], 10) - 1 : -1;
 
   if (selectedTrackIndex >= 0 && selectedTrackIndex < tracks.length) {
     const selectedTrack = tracks[selectedTrackIndex];
-    bot.sendMessage(chatId, "⬆️  Загрузка музыки, пожалуйста, подождите...➡️");
+    bot.sendMessage(chatId, config.systemMessage.loadingMusicMessage);
 
     bot.sendAudio(chatId, selectedTrack.fileId, {
-      caption: selectedTrack.title,
+      
       title: selectedTrack.title,
       performer: performerTrackSelection(selectedTrack.title) ?? '',
     }).then(() => {
@@ -84,7 +110,7 @@ export const registerMusicHandlers = (bot: TelegramBot) => {
   // Обработчик выбора трека
   bot.on("message", async (msg: TelegramBot.Message) => {
     try {
-      const text = msg.text;
+      const {text} = msg;
       if (text && /^\d+\./.test(text)) {
         await handleTrackSelection(bot, msg);
       }
