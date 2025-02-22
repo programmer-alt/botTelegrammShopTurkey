@@ -20,5 +20,8 @@ export interface Config {
         help: string;
         mainMenu: string;
         music: string;
+    };
+    systemMessage: {
+        loadingMusicMessage: string
     }
 }

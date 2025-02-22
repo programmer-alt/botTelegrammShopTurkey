@@ -8,21 +8,21 @@ async function getTrackFromDirectory () {
    // Получаем путь к директории с музыкой
    const musicDir = path.join(__dirname, '../assets/music');
    try {
-    //читаем содержимое директории
-    const files = await fs.readdir(musicDir)
+    // читаем содержимое директории
+    const files = await fs.readdir(musicDir);
     // фильтруем только mp3-файлы
     return  files
     .filter(file => file.endsWith('.mp3'))
     .map(file => ({
       title: path.parse(file).name ,// имя файла без расширения
-      fileId: path.join(musicDir, file) // полный путь к файлу
-    }))
+      fileId: path.join(musicDir, file), // полный путь к файлу
+    }));
    } catch (error){
-    console.log(' Ошибка при чтении директории с музыкой', error)
-    return []
+    console.log(' Ошибка при чтении директории с музыкой', error);
+    return [];
    }
 }
-let tracks: { title: string; fileId: string}[] = [
+const tracks: { title: string; fileId: string}[] = [
 // Определяем массив с информацией о треках
 {
     title: "Bobina - The Unforgiven (Airplay Mix)",
@@ -40,7 +40,7 @@ let tracks: { title: string; fileId: string}[] = [
     title: "ONEIL, KANVISE, FAVIA - Around My Heart",
     fileId: "src/assets/music/ONEIL, KANVISE, FAVIA - Around My Heart.mp3",
   },
-]
+];
 
 // Функция для определения исполнителя
 const performerTrackSelection = (trackTitle: string) => {
@@ -54,13 +54,13 @@ const performerTrackSelection = (trackTitle: string) => {
 // Функция для отправки списка треков
 export const sendTrackList = async (bot: TelegramBot, chatId: number) => {
   try {
-    const tracks = await getTrackFromDirectory(); 
+    
 
     const trackList = tracks
       .map((track, index) => `${index + 1}. ${track.title}`)
       .join('\n');
 
-    bot.sendMessage(chatId, config.messages.music + "\n" + trackList, {
+    bot.sendMessage(chatId, `${config.messages.music  }\n${  trackList}`, {
       reply_markup: {
         keyboard: musicKeyboard(tracks),
         one_time_keyboard: true,
@@ -75,14 +75,14 @@ export const sendTrackList = async (bot: TelegramBot, chatId: number) => {
 // Функция для обработки выбора трека
 export const handleTrackSelection = (bot: TelegramBot, msg: TelegramBot.Message) => {
   const chatId = msg.chat.id;
-  const text = msg.text;
+  const {text} = msg;
 
   const match = text?.match(/^(\d+)\./);
-  const selectedTrackIndex = match ? parseInt(match[1]) - 1 : -1;
+  const selectedTrackIndex = match ? parseInt(match[1], 10) - 1 : -1;
 
   if (selectedTrackIndex >= 0 && selectedTrackIndex < tracks.length) {
     const selectedTrack = tracks[selectedTrackIndex];
-    bot.sendMessage(chatId, "⬆️  Загрузка музыки, пожалуйста, подождите...➡️");
+    bot.sendMessage(chatId, config.systemMessage.loadingMusicMessage);
 
     bot.sendAudio(chatId, selectedTrack.fileId, {
       
@@ -110,7 +110,7 @@ export const registerMusicHandlers = (bot: TelegramBot) => {
   // Обработчик выбора трека
   bot.on("message", async (msg: TelegramBot.Message) => {
     try {
-      const text = msg.text;
+      const {text} = msg;
       if (text && /^\d+\./.test(text)) {
         await handleTrackSelection(bot, msg);
       }
