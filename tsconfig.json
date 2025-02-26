@@ -5,8 +5,10 @@
     "esModuleInterop": true,
     "strict": true,
     "outDir": "dist",
+    "sourceMap": true,
     "skipLibCheck": true,
-    "types": ["node"]
+    "types": ["node"],
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*"]
 }
