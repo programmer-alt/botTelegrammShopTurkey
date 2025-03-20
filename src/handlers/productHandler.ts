@@ -12,7 +12,7 @@ export const handleProducts = async (bot: TelegramBot, chatId: number) => {
       return;
     }
     for (const product of products) {
-      // Отправляем изображение
+       // Отправляем изображение
       if (product.image_path) {
         await bot.sendPhoto(chatId, product.image_path);
       }
