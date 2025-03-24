@@ -22,8 +22,6 @@ class Database {
 export const getProducts =  async () => {
     const pool = Database.getInstance();
     const result = await pool.query('SELECT id, name, price, description, image_path FROM product');
-    console.log('полученные продукты', result.rows);
-    console.log(' количество продуктов', result.rows.length);
     return result.rows;
     
 };

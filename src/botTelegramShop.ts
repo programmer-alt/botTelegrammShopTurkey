@@ -16,9 +16,9 @@ const bot = new TelegramBot(config.token, config.bot);
 
 // Регистрация обработчиков
 registerMusicHandlers(bot);
-messageHandler(bot)
-aboutNavHandler(bot)
-productNavNandler(bot)
+messageHandler(bot);
+aboutNavHandler(bot);
+productNavNandler(bot);
 
 // Обработчик команды /start
 bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
@@ -37,7 +37,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
     // Обработка кнопок
     switch (text) {
       case config.buttons.products:
-        await handleProducts(bot, chatId);
+        await handleProducts(bot, chatId, msg.text ?? '');
         break;
       case config.buttons.help:
         await helpHandler(bot, chatId);
