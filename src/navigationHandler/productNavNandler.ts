@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { handleProducts } from "../handlers/productHandler";
+import { productHandler } from "../handlers/productHandler";
 
 export const productNavNandler = (bot: TelegramBot) => {
   bot.onText(/\/product/, async (msg: TelegramBot.Message) => {
@@ -12,7 +12,7 @@ export const productNavNandler = (bot: TelegramBot) => {
       // Ожидаем ответ от пользователя
       bot.on("message", async (response: TelegramBot.Message) => {
         const searchTerm = response.text || ""; // получаем текст введенный пользователем
-        await handleProducts(bot, msg.chat.id, searchTerm);
+        await productHandler(bot, msg.chat.id, searchTerm);
       });
     } catch (error) {
       console.error("Ошибка при обработке продуктов:", error);
