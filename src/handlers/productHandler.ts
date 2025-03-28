@@ -5,7 +5,7 @@ import { config } from "../config/config";
 import { getProducts } from "../database";
 
 // Экспортируем асинхронную функцию для обработки продуктов
-export const handleProducts = async (
+export const productHandler = async (
   // Принимаем бота, ID чата и строку поиска
   bot: TelegramBot,
   chatId: number,
@@ -22,7 +22,7 @@ export const handleProducts = async (
       : products; // Если нет строки поиска, показываем все продукты
 
     // Проверяем, есть ли продукты
-    if ((await products).length === 0) {
+    if (await products.length === 0) {
       // Если продуктов нет, отправляем сообщение об этом
       await bot.sendMessage(chatId, "Продукт не найден.", {
         reply_markup: createMainKeyboard(), // Добавляем клавиатуру с основным меню
