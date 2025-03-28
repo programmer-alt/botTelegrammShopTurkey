@@ -22,7 +22,7 @@ export const productHandler = async (
       : products; // Если нет строки поиска, показываем все продукты
 
     // Проверяем, есть ли продукты
-    if (await products.length === 0) {
+    if ( products.length === 0) {
       // Если продуктов нет, отправляем сообщение об этом
       await bot.sendMessage(chatId, "Продукт не найден.", {
         reply_markup: createMainKeyboard(), // Добавляем клавиатуру с основным меню

@@ -1,7 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import { config } from "./config/config";
 import { startHandler } from "./handlers/startHandler";
-import { handleProducts } from "./handlers/productHandler";
+import { productHandler  } from "./handlers/productHandler";
 import { helpHandler } from "./handlers/helpHandlers";
 import { aboutHandler } from "./handlers/aboutHandler";
 import { contactHandler } from "./handlers/contactHandler";
@@ -37,7 +37,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
     // Обработка кнопок
     switch (text) {
       case config.buttons.products:
-        await handleProducts(bot, chatId, msg.text ?? '');
+        await productHandler (bot, chatId, msg.text ?? '');
         break;
       case config.buttons.help:
         await helpHandler(bot, chatId);
