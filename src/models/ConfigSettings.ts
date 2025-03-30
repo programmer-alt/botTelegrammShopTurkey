@@ -1,5 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
-
+export interface Answer {
+    text: string;
+}
 export interface Config {
     token: string;
     bot: {
@@ -23,5 +25,6 @@ export interface Config {
     };
     systemMessage: {
         loadingMusicMessage: string
-    }
+    },
+    randomAnswers: Answer [];
 }
