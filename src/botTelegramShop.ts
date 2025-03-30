@@ -9,7 +9,8 @@ import { welcomeHandler } from "./handlers/mainMenuHandler";
 import { registerMusicHandlers, sendTrackList } from "./handlers/musicHandler";
 import {messageHandler} from './handlers/messageHandler';
 import {aboutNavHandler} from './navigationHandler/aboutNavHandler';
-import { productNavNandler } from './navigationHandler/productNavNandler';
+import { productNavHandler } from './navigationHandler/productNavHandler';
+
 
 
 const bot = new TelegramBot(config.token, config.bot);
@@ -18,7 +19,7 @@ const bot = new TelegramBot(config.token, config.bot);
 registerMusicHandlers(bot);
 messageHandler(bot);
 aboutNavHandler(bot);
-productNavNandler(bot);
+productNavHandler(bot);
 
 // Обработчик команды /start
 bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
