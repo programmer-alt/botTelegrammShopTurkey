@@ -23,7 +23,7 @@ export const productHandler = async (
     // Проверяем, есть ли продукты -нету возвращаем null
     if (filteredProducts.length === 0) {
       return null;
-    };
+    }
     // Итерируемся по продуктам
     for (const product of filteredProducts) {
       // Если у продукта есть изображение, отправляем его
