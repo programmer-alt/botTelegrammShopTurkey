@@ -12,42 +12,38 @@ export const messageHandler = (bot: TelegramBot) => {
         text,
       } = msg;
       const buttonTexts = Object.values(config.buttons);
-      console.log('тексты кнопок', buttonTexts);
-      console.log(`Текст введенный пользователем "${text}":`, buttonTexts.includes(text ?? ''));
-      // Если пользователь нажимает кнопку "Продукты"
-      if (text === config.buttons.products) {
-        // Вызываем productHandler без строки поиска, чтобы показать все продукты
-        const productNames = await productHandler(bot, chatId, "");
-        if (!productNames) {
-          await bot.sendMessage(chatId, "Продукты не найдены.");
-        }
-        return;
-      }
-
+    
+     // Если пользователь нажимает кнопку "Продукты"
+     if (text === config.buttons.products) {
+       // Вызываем productHandler без строки поиска, чтобы показать все продукты
+       const products = await productHandler(bot, chatId, "");
+       
+       // Проверяем, есть ли продукты
+       if (!products) {
+         // Если продуктов нет, отправляем сообщение об этом
+         await bot.sendMessage(chatId, "Продукты не найдены.");
+       }
+       
+       // Завершаем обработку этого сообщения
+       return;
+     }
       // Обработка других сообщений
-      if (!text || !isNaN(Number(text)) || buttonTexts.includes(text) || /^\/|\d+\./.test(text))   {
+      if (
+        !text ||
+        !isNaN(Number(text)) ||
+        buttonTexts.includes(text) ||
+        /^\/|\d+\./.test(text)
+      ) {
         // Обработка команд или чисел
         return;
       }
 
-      let inProductMode = false;
-      const answer = randomGenerateAnswer(config.randomAnswers).text;
-
-      if (config.buttons.products) {
-        inProductMode = true;
-        const result = await productHandler(bot, chatId, text ?? '');
-
-        if (result === null) {
-          await bot.sendMessage(chatId, answer);
-        } else {
-          await bot.sendMessage(chatId, `Найденные продукты: ${result}`);
-        }
-
-        return;
-      } else if (!config.buttons.products) {
+      const foundProducts = await productHandler(bot,chatId, text);
+      if (!foundProducts) {
+        const answer = randomGenerateAnswer(config.randomAnswers).text;
         await bot.sendMessage(chatId, answer);
-        inProductMode = false;
-      }
+      } 
+      
     } catch (error) {
       console.error("Ошибка обработчика сообщений messageHandler:", error);
       await bot.sendMessage(
