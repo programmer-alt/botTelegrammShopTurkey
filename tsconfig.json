@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "commonjs",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "strict": true,
     "outDir": "dist",
     "sourceMap": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@apiServer": ["client/src/apiServer"]
+    },
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "client/src/**/*"],
+  "exclude": ["node_modules"]
 }
