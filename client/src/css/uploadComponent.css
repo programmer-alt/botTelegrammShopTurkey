@@ -1,0 +1,46 @@
+.upload-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.upload-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upload-input-container {
+    margin-bottom: 10px
+}
+
+.upload-input {
+    width: 100%
+}
+
+.upload-button {
+    padding: 8px;
+    cursor: pointer;
+    background-color: aqua;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+.upload-button.loading {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.upload-button:hover:not(.loading) {
+    background-color: #45a049;
+}
+
+.upload-message {
+    margin-top: 10px;
+}
+
+.upload-message.success {
+    color: green;
+}
+.upload-message.error {
+    color: red;
+}
