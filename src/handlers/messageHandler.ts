@@ -30,7 +30,6 @@ export const messageHandler = (bot: TelegramBot) => {
       // Обработка других сообщений
       if (
         !text ||
-        !isNaN(Number(text)) ||
         buttonTexts.includes(text) ||
         /^\/|\d+\./.test(text)
       ) {
