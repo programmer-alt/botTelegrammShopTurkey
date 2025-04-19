@@ -1,72 +1,76 @@
-// Импортируем необходимые модули
 import TelegramBot from "node-telegram-bot-api";
-import { createMainKeyboard } from "../keyboards/keyboard";
-import { config } from "../config/config";
 import { getProducts } from "../database";
+import { createMainKeyboard } from "../keyboards/keyboard";
 
-// Экспортируем асинхронную функцию для обработки продуктов
 export const productHandler = async (
   bot: TelegramBot,
   chatId: number,
   productName: string,
 ): Promise<string | null> => {
   try {
-    // Получаем актуальный список продуктов из базы данных
-    const products = await getProducts();
+    // Отправляем сообщение о загрузке только один раз
+    const loadingMessage = await bot.sendMessage(chatId, "⏳ Загружаю продукты...");
     
-    // Фильтруем продукты по введенной строке поиска
+    const products = await getProducts();
+    const totalProductsCount = products.length;
+
     const filteredProducts = productName
       ? products.filter((product) =>
           product.name.toLowerCase().includes(productName.toLowerCase()),
         )
       : products;
 
-    // Проверяем, есть ли продукты
-    if (filteredProducts.length === 0) {
-      await bot.sendMessage(chatId, "Продукты не найдены", {
-        reply_markup: createMainKeyboard(),
-      });
+    // Удаляем сообщение о загрузке (приводим message_id к number)
+    await bot.deleteMessage(chatId, Number(loadingMessage.message_id));
+
+ 
+    if (!products.length) {
+      await bot.sendMessage(chatId, "❌ По вашему запросу товары не найдены");
       return null;
     }
+    
+    
 
-    // Отправляем сообщение о количестве найденных продуктов
+    // Отправляем сообщение только если есть продукты
     await bot.sendMessage(
       chatId,
-      `Найдено продуктов: ${filteredProducts.length}`
+      `✅ Найдено товаров: ${filteredProducts.length}\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
+      `Сейчас покажем...`,
+      {parse_mode: 'Markdown'},
     );
 
-    // Итерируемся по продуктам
+
+    const productResults = [];
+    
     for (const product of filteredProducts) {
-      // Если у продукта есть изображение, отправляем его
       if (product.image_path) {
         await bot.sendPhoto(chatId, product.image_path);
       }
-      
-      // Создаем текст о продукте
-      let productText = `🏷️ ${product.name}\n`;
-      // Если у продукта цена, добавляем ее в текст
-      if (product.price) {
-        productText += `💰 Цена: ${product.price} руб.\n`;
-      }
-      // Если у продукта описание, добавляем его в текст
-      if (product.description) {
-        productText += `📝 Описание: ${product.description}\n`;
-      }
-      
-      // Отправляем текст о продукте с клавиатурой основного меню
+
+      const productText = [
+        `🏷️ ${product.name}`,
+        product.price && `💰 Цена: ${product.price} руб.`,
+        product.description && `📝 Описание: ${product.description}`,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
       await bot.sendMessage(chatId, productText, {
         reply_markup: createMainKeyboard(),
       });
+
+      productResults.push(product.name);
     }
-    
-    return filteredProducts.map((product) => product.name).join(", ");
+
+    return productResults.join(", ");
   } catch (error) {
     console.error("Ошибка при обработке продуктов:", error);
-    await bot.sendMessage(
-      chatId,
-      "Произошла ошибка при получении продуктов",
-      { reply_markup: createMainKeyboard() }
-    );
+    await bot.sendMessage(chatId, "Произошла ошибка при получении продуктов", {
+      reply_markup: createMainKeyboard(),
+    });
     return null;
   }
 };
+
+export default productHandler;
