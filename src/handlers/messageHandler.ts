@@ -1,5 +1,6 @@
-import TelegramBot from "node-telegram-bot-api";
-import { config } from "../config/config";
+import TelegramBot from 'node-telegram-bot-api';
+import { config } from '../config/config';
+
 import { productHandler } from "./productHandler";
 
 type Answer = { text: string };
