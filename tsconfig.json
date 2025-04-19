@@ -1,21 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "esModuleInterop": true,
+    "target": "ES6", // Используем самую современную версию JavaScript
+    "module": "commonJS", // Используем ES Modules (import/export)
+    "moduleResolution": "Node",
+    "outDir": "./dist", // Папка для скомпилированных файлов
+    "rootDir": "./src", // Корневая папка исходных файлов
     "strict": true,
-    "outDir": "dist",
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "types": ["node"],
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@apiServer": ["client/src/apiServer"]
-    },
-    "moduleResolution": "node",
-    "resolveJsonModule": true
+    "sourceMap": true, // Включаем sourcemaps для отладки
+    "esModuleInterop": true, // Разрешаем совместимость �� CommonJS
+    "resolveJsonModule": true, // Разрешаем импорт JSON файлов
+    "skipLibCheck": true, // Пропускаем проверку типов в библиотеках
+    "forceConsistentCasingInFileNames": true, // Убедитесь, что регистр файлов согласован
+    "types": ["node", "node-telegram-bot-api"] // Типы для Node.js и Telegram API
   },
-  "include": ["src/**/*", "client/src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"], // Включаем все файлы из папки src
+  "exclude": ["node_modules", "client"] // Исключаем ненужные папки
 }
