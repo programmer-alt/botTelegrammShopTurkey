@@ -1,4 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
+export interface ConfigSettings {
+    // Добавьте необходимые поля, если они есть
+}
+
 export interface Answer {
     text: string;
 }

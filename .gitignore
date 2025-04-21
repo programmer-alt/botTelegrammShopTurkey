@@ -1,6 +1,37 @@
-node_modules
-dist
-package-lock.json
+
+# Игнорировать стандартные файлы и директории
+node_modules/
 .env
-.vscode
+.env.local
+.env.development
+.env.production
+/dist/
+/build/
+/out/
+
+# Игнорировать файлы редактора
+.vscode/
+.idea/
+
+# Игнорировать временные и отладочные файлы
+*.log
+*.tmp
+*.swp
+
+# Игнорировать файлы сборки
+*.map
+*.cache
+
+# Игнорировать специфичные для проекта
+client/node_modules/
+client/package-lock.json
+client/dist/
+client/build/
+
+# Игнорировать специфичные для проекта
+src/**/*.spec.ts
+
 .qodo
+
+package-lock.json
+init.sh

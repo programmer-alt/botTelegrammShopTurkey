@@ -1,13 +1,14 @@
 import TelegramBot from "node-telegram-bot-api";
 import { getProducts } from "../database";
 import { createMainKeyboard } from "../keyboards/keyboard";
+import { config } from '../config/config';
 
 export const productHandler = async (
   bot: TelegramBot,
   chatId: number,
   productName: string,
 ): Promise<string | null> => {
-  try {
+  try { 
     // Отправляем сообщение о загрузке только один раз
     const loadingMessage = await bot.sendMessage(chatId, "⏳ Загружаю продукты...");
     
@@ -22,25 +23,13 @@ export const productHandler = async (
 
     // Удаляем сообщение о загрузке (приводим message_id к number)
     await bot.deleteMessage(chatId, Number(loadingMessage.message_id));
-
+await bot.sendMessage(
+  chatId,
+ `📊 Всего продуктов в базе: ${totalProductsCount} 🛒\n\n🔹 Все продукты: ${products.map(p => p.name).join(', ')}`,
+  {parse_mode: 'Markdown'},
+);
  
-    if (!products.length) {
-      await bot.sendMessage(chatId, "❌ По вашему запросу товары не найдены");
-      return null;
-    }
-    
-    
-
-    // Отправляем сообщение только если есть продукты
-    await bot.sendMessage(
-      chatId,
-      `✅ Найдено товаров: ${filteredProducts.length}\n` +
-      `━━━━━━━━━━━━━━━━━━━━\n` +
-      `Сейчас покажем...`,
-      {parse_mode: 'Markdown'},
-    );
-
-
+ 
     const productResults = [];
     
     for (const product of filteredProducts) {
