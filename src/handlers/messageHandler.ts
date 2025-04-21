@@ -15,10 +15,18 @@ export const messageHandler = (bot: TelegramBot) => {
     
   
             // Обработка других сообщений
-            if (!text || buttonTexts.includes(text) || /^\/|\d+\./.test(text)) {
-                return;
-      } 
-      
+            if (
+              !text || 
+              buttonTexts.includes(text) || 
+              /^\/|\d+\./.test(text)
+            ) {
+              return;
+            }
+      if (text && /^[0-9]+$/.test(text)) {
+        const answer = randomGenerateAnswer(config.randomAnswers).text;
+                await bot.sendMessage(chatId, answer);
+              
+      }
             const foundProducts = await productHandler(bot, chatId, text);
             if (!foundProducts) {
                 const answer = randomGenerateAnswer(config.randomAnswers).text;
