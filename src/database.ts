@@ -2,7 +2,7 @@ import {Pool} from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
-class Database {
+ export class Database {
     private static instance: Pool;
     private constructor () {}
     public static getInstance (): Pool {

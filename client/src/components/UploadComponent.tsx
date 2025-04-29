@@ -49,6 +49,7 @@ const UploadComponent = () => {
         <div className="upload-input-container">
             <input 
             type="file"
+            placeholder="Выберите файл"
             accept=".xlsx, .csv"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
             disabled={upLoading}
