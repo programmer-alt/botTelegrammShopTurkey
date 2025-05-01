@@ -5,6 +5,8 @@ import path from 'path';
 import fs from 'fs';
 import { parseFile } from './services/parserSelector';
 import { insertParseProductstoBd } from 'services/fileUploadBD';
+import { getProducts } from '../../src/database';
+
 
 // Создаем экземпляр Express-приложения
 const app = express();
@@ -72,6 +74,17 @@ export const uploadHandler = async (req: Request, res: Response, next: NextFunct
 
 // Регистрируем маршрут для обработки POST-запросов на '/upload'
 app.post('/upload', upload.single('file'), uploadHandler);
+
+// маршрут для получения продуктов
+app.get('/api/products', async (req: Request, res: Response) => {
+  try {
+    const products = await getProducts();
+    res.status(200).json(products);
+  } catch (error) {
+    console.log( ' Ошибка при получение продуктов:', error);
+    res.status(500).json({ error: 'Ошибка при получении продуктов' });
+  }
+});
 
 // Устанавливаем порт для запуска сервера
 const PORT = 3000;
