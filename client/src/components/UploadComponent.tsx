@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import {AppDispatch} from '../store/store';
+import { loadProducts } from '../store/productsSlice';
 
 // Основной компонент
 
@@ -9,6 +12,8 @@ const UploadComponent = () => {
   const [upLoading, setIsUploading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Используем useDispatch для доступа к диспетчеру Redux
+  const dispatch = useDispatch<AppDispatch>();
   // Функция для обработки загрузки
   const handleUpload = async () => {
     // Проверка, выбран ли файл
@@ -34,6 +39,7 @@ const UploadComponent = () => {
       });
       // Обработка успешной загрузки
       setMessage(response.data.message || "Товары успешно загружены!");
+      dispatch(loadProducts()); // Обновление списка товаров в Redux с помощью dispatch
     } catch (error) {
       setMessage(" Ошибка при загрузке файла");
       console.error(" Ошибка загрузки", error);
