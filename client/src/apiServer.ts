@@ -73,7 +73,7 @@ export const uploadHandler = async (req: Request, res: Response, next: NextFunct
 };
 
 // Регистрируем маршрут для обработки POST-запросов на '/upload'
-app.post('/upload', upload.single('file'), uploadHandler);
+app.post('api/products/upload', upload.single('file'), uploadHandler);
 
 // маршрут для получения продуктов
 app.get('/api/products', async (req: Request, res: Response) => {
