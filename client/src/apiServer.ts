@@ -2,6 +2,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
+// импорт fs для работы с файлами
 import fs from 'fs';
 import { parseFile } from './services/parserSelector';
 import { insertParseProductstoBd } from 'services/fileUploadBD';
