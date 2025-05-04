@@ -1,5 +1,6 @@
 
 import { Product } from 'models/product';
+// импорт базы данных с помощью алиаса
 import {Database }from '@Db';
 
 export async function insertParseProductstoBd(parseProducts: Product[]): Promise<void> {

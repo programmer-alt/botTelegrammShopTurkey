@@ -19,7 +19,8 @@
     "baseUrl": "src",
     "paths": {
       "*": ["*"],
-      "@Db/*": ["../../../src/*"]
+      "@Db": ["../../src/database"],
+      "@Db/*": ["../../src/database/*"]
     }
   },
   "include": ["src/**/*"],
