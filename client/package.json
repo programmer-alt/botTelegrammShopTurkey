@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node dist/client/src/index.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +29,9 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.27.1",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.1",
     "@types/csv-parse": "^1.1.12",
     "@types/node": "^22.14.1"
   }
