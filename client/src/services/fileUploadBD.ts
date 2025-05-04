@@ -1,6 +1,6 @@
 
 import { Product } from 'models/product';
-import {Database }from '../../../src/database';
+import {Database }from '@Db';
 
 export async function insertParseProductstoBd(parseProducts: Product[]): Promise<void> {
     // Получаем экземпляр пула подключений к базе данных

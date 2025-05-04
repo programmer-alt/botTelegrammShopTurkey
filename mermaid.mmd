@@ -1,0 +1,23 @@
+flowchart TD
+    A[Начало: parseCSV] --> B[Создание Promise]
+    B --> C[Инициализация пустого массива results]
+    C --> D[Создание потока чтения файла]
+    D --> E[Обработка CSV через csv-parser]
+    E --> F{Обработка данных}
+    F --> G[Для каждой строки CSV]
+    G --> H[Преобразование данных в объект Product]
+    H --> I[Добавление объекта в массив results]
+    I --> F
+    F --> J[Когда все данные обработаны]
+    J --> K[Возврат массива results через resolve]
+    L[Обработка ошибок] --> M[Вызов reject с ошибкой]
+    D -- "При ошибке" --> L
+    E -- "При ошибке" --> L
+    
+    subgraph "Интерфейс Product"
+    N[id: number]
+    O[name: string]
+    P[price?: number]
+    Q[description?: string]
+    R[image_path?: string]
+    end
