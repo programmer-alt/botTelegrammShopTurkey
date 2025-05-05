@@ -2,6 +2,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
+// импорт fs для работы с файлами
 import fs from 'fs';
 import { parseFile } from './services/parserSelector';
 import { insertParseProductstoBd } from 'services/fileUploadBD';
@@ -78,6 +79,7 @@ app.post('api/products/upload', upload.single('file'), uploadHandler);
 // маршрут для получения продуктов
 app.get('/api/products', async (req: Request, res: Response) => {
   try {
+    // Получаем список продуктов из базы данных
     const products = await getProducts();
     res.status(200).json(products);
   } catch (error) {

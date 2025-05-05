@@ -41,6 +41,7 @@ const UploadComponent = () => {
       setMessage(response.data.message || "Товары успешно загружены!");
       dispatch(loadProducts()); // Обновление списка товаров в Redux с помощью dispatch
     } catch (error) {
+      // отправляем сообщение об ошибке
       setMessage(" Ошибка при загрузке файла");
       console.error(" Ошибка загрузки", error);
     } finally {
