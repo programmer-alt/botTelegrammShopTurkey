@@ -79,6 +79,7 @@ app.post('api/products/upload', upload.single('file'), uploadHandler);
 // маршрут для получения продуктов
 app.get('/api/products', async (req: Request, res: Response) => {
   try {
+    // Получаем список продуктов из базы данных
     const products = await getProducts();
     res.status(200).json(products);
   } catch (error) {
