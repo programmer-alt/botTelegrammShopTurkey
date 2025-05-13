@@ -1,13 +1,34 @@
 import axios from "axios";
-import { Product } from "models/product";
+import { Product } from "../models/product";
 
-export async function fetchProducts (): Promise<Product[]> {
+const API_URL = 'http://localhost:3000/api';
+
+export async function fetchProducts(): Promise<Product[]> {
     try {
-        // в response сохраняем 
-    const response = await axios.get<Product[]>('/api/products');
-    return response.data;
+        const response = await axios.get<Product[]>(`${API_URL}/products`);
+        return response.data;
     } catch (error) {
-        console.log( ' Ошибка при получение продуктов:', error);
+        console.error('Ошибка при получении продуктов:', error);
+        throw error;
+    }
+}
+/**
+ * Сервис для работы с продуктами через API.
+ * Содержит функции для получения списка продуктов и загрузки новых продуктов на сервер.
+ */
+export async function uploadProducts(file: File): Promise<Product[]> {
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const response = await axios.post<Product[]>(`${API_URL}/products/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Ошибка при загрузке файла:', error);
         throw error;
     }
 }
