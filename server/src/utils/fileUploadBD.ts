@@ -9,7 +9,7 @@ import { Database } from '../database';
  * - Если все вставки проходят успешно, транзакция фиксируется (COMMIT).
  * - Если возникает ошибка, все изменения откатываются (ROLLBACK).
  * После завершения работы соединение с базой возвращается в пул.
- * 
+ * !экспортируется функция insertParseProductstoBd.
  * @param parseProducts - массив продуктов для вставки в базу данных
  */
 export async function insertParseProductstoBd (parseProducts: Product[]): Promise<void> {
@@ -26,7 +26,7 @@ export async function insertParseProductstoBd (parseProducts: Product[]): Promis
         for (const product of parseProducts) {
             console.log('Вставка продукта:', product);
             await client.query(
-                'INSERT INTO products (id, name, price, description, image_path) VALUES ($1, $2, $3, $4, $5)',
+                'INSERT INTO product (id, name, price, description, image_path) VALUES ($1, $2, $3, $4, $5)',
                 [product.id, product.name, product.price, product.description, product.image_path],
             );
         }
