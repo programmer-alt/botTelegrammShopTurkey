@@ -20,11 +20,10 @@ export async function uploadProducts(file: File): Promise<Product[]> {
     try {
         const formData = new FormData();
         formData.append('file', file);
-        
         const response = await axios.post<Product[]>(`${API_URL}/products/upload`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+                'Content-Type': 'multipart/form-data'
+            }
         });
         return response.data;
     } catch (error) {
