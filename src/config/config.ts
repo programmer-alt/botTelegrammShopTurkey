@@ -1,8 +1,10 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from 'dotenv';
 import { Config } from "../models/ConfigSettings.js";
+import path from "path";
 
-dotenv.config();
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({path: envPath});
 
  export const config: Config = {
     token: process.env.TELEGRAM_BOT_TOKEN || '',

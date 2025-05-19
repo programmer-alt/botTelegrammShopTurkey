@@ -1,7 +1,9 @@
+
 import TelegramBot from "node-telegram-bot-api";
-import { getProducts } from "../database";
+import axios from "axios";
 import { createMainKeyboard } from "../keyboards/keyboard";
 import { config } from '../config/config';
+import { Product } from '../../common/models/product';
 
 export const productHandler = async (
   bot: TelegramBot,
@@ -12,11 +14,12 @@ export const productHandler = async (
     // Отправляем сообщение о загрузке только один раз
     const loadingMessage = await bot.sendMessage(chatId, "⏳ Загружаю продукты...");
     
-    const products = await getProducts();
+    const response = await axios.get('http://localhost:3000/api/products');
+    const products = response.data;
     const totalProductsCount = products.length;
 
     const filteredProducts = productName
-      ? products.filter((product) =>
+      ? products.filter((product: Product) =>
           product.name.toLowerCase().includes(productName.toLowerCase()),
         )
       : products;
@@ -25,7 +28,7 @@ export const productHandler = async (
     await bot.deleteMessage(chatId, Number(loadingMessage.message_id));
 await bot.sendMessage(
   chatId,
- `📊 Всего продуктов в базе: ${totalProductsCount} 🛒\n\n🔹 Все продукты: ${products.map(p => p.name).join(', ')}`,
+ `📊 Всего продуктов в базе: ${totalProductsCount} 🛒\n\n🔹 Все продукты: ${products.map((p: Product) => p.name).join(', ')}`,
   {parse_mode: 'Markdown'},
 );
  
