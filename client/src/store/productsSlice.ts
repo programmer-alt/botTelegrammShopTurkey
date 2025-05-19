@@ -36,7 +36,7 @@ export const loadProducts = createAsyncThunk(
     }
   },
 );
-// Создаем асинхронный thunk для загрузки продуктов, который вызывает fetchProducts
+
 
 const productsSlice = createSlice({
   name: 'products',

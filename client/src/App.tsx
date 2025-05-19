@@ -1,9 +1,11 @@
 import React from 'react';
 import UploadComponent from './components/UploadComponent';
-import './UploadComponent.css';
+import './css/uploadComponent.css';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import ProductList from 'services/ProductList';
+import ProductList from './components/ProductList';
+
+
 
 function App() {
   return (
