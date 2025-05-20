@@ -10,6 +10,7 @@ export interface Config {
     token: string;
     bot: {
         polling: boolean;
+        port?: number;
     };
     messages: {
         products: string;

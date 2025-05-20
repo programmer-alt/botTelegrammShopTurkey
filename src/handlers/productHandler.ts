@@ -14,7 +14,7 @@ export const productHandler = async (
     // Отправляем сообщение о загрузке только один раз
     const loadingMessage = await bot.sendMessage(chatId, "⏳ Загружаю продукты...");
     
-    const response = await axios.get('http://localhost:3000/api/products');
+    const response = await axios.get('http://localhost:3001/api/products');
     const products = response.data;
     const totalProductsCount = products.length;
 

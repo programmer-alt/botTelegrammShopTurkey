@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Product } from "../models/product";
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:3001/api';
 
 export async function fetchProducts(): Promise<Product[]> {
     try {
@@ -23,7 +23,7 @@ export async function uploadProducts(file: File): Promise<Product[]> {
         const response = await axios.post<Product[]>(`${API_URL}/products/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
         });
         return response.data;
     } catch (error) {
