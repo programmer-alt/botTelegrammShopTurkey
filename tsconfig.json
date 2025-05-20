@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES6", // Используем самую современную версию JavaScript
-    "module": "commonJS", // Используем ES Modules (import/export)
+    "module": "commonjs",
     "moduleResolution": "Node",
-    "outDir": "./dist", // Папка для скомпилированных файлов
-    "rootDir": "./src", // Корневая папка исходных файлов
+    "outDir": "./src/dist", // Папка для скомпилированных файлов
+    "rootDir": "./", // Корневая папка исходных файлов
     "strict": true,
     "sourceMap": true, // Включаем sourcemaps для отладки
     "esModuleInterop": true, // Разрешаем совместимость �� CommonJS
@@ -13,6 +13,6 @@
     "forceConsistentCasingInFileNames": true, // Убедитесь, что регистр файлов согласован
     "types": ["node", "node-telegram-bot-api"] // Типы для Node.js и Telegram API
   },
-  "include": ["src/**/*"], // Включаем все файлы из папки src
-  "exclude": ["node_modules", "client"] // Исключаем ненужные папки
+  "include": ["src/**/*"], // Включаем все файлы из папки src и common
+  "exclude": ["node_modules"] // Исключаем ненужные папки
 }
