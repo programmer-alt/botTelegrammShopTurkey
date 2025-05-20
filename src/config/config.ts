@@ -9,7 +9,8 @@ dotenv.config({path: envPath});
  export const config: Config = {
     token: process.env.TELEGRAM_BOT_TOKEN || '',
     bot: {
-        polling: true
+        polling: true,
+        port: Number(process.env.PORT) || 3001
     },
     messages: {
         welcome: 'Добро пожаловать в магазин Индюшонок! Выберете действия:',
