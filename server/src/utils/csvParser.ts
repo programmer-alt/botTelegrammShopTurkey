@@ -1,7 +1,7 @@
 import csv from 'csv-parser';
 import fs from 'fs';
 import { Product } from '../models/Product';
-import path from 'path';
+import { getImagePath } from './imagePathUtil';
 
 export function parseCSV(filePath: string): Promise<Product[]> {
     return new Promise((resolve, reject) => {
@@ -9,11 +9,8 @@ export function parseCSV(filePath: string): Promise<Product[]> {
         fs.createReadStream(filePath)
             .pipe(csv())
             .on('data', (data: any) => {
-              let imagePath = data.image_path;
-              if (imagePath){
-                const fileName = path.basename(imagePath);
-                `H:\\\Training\\\bot_Telegramm\\\src\\\imagesProducts\\${fileName}`;
-              }
+              const imagePath = getImagePath(data.image_path);
+             
                 results.push({
                     id: Number(data.id),
                     name: data.name,

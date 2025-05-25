@@ -4,6 +4,7 @@ import { Product } from "../models/Product";
 import xlsx from "xlsx";
 // Импорт модуля path для работы с путями файлов
 import path from "path";
+import {getImagePath} from './imagePathUtil';
 
 // Экспорт функции parseXLSX, которая принимает путь к файлу и возвращает массив Product
 export function parseXLSX(filePath: string): Product[] {
@@ -30,14 +31,7 @@ export function parseXLSX(filePath: string): Product[] {
       // Фильтрация строк: оставляем только те, у которых есть id и оно является числом
       .filter((row) => row.id && !isNaN(Number(row.id)))
       .map((row) => {
-        // извлекаем путь изображения
-       let imagePath = row.image_path;
-       if (imagePath) {
-        // из пути изображения извлекаем имя изображения
-        const fileName = path.basename(imagePath);
-        // создаем новый путь к изображению, который начинается с H:\Training\bot_Telegramm\src\imagesProducts\\
-       imagePath = `H:\\Training\\bot_Telegramm\\src\\imagesProducts\\${fileName}`;
-       }
+      const imagePath = getImagePath(row.image_path);
         // Возвращение объекта Product с обработанными данными
         return {
           id: Number(row.id),
