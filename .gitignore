@@ -52,7 +52,8 @@ client/dist_client/store/**/*.js
 # Игнорировать JS файлы в client/dist_client
 client/dist_client/*.js
 
-# Игнорировать временную папку temp_backup и все файлы с расширениями .md и .ubn
+// Игнорировать папки и файлы  
 temp_backup/
 *.md
 *.ubn
+
