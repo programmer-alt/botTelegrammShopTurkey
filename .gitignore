@@ -1,4 +1,3 @@
-
 # Игнорировать стандартные файлы и директории
 node_modules/
 .env
@@ -27,6 +26,10 @@ client/node_modules/
 client/package-lock.json
 client/dist/
 client/build/
+client/dist_client/services
+server/src/uploads
+server/dist/
+server/dist/uploads/
 
 # Игнорировать специфичные для проекта
 src/**/*.spec.ts
@@ -35,3 +38,21 @@ src/**/*.spec.ts
 
 package-lock.json
 init.sh
+
+# Игнорировать скомпилированные JS файлы в client/dist_client
+client/dist_client/**/*.js
+client/dist_client/**/*.js.map
+
+# Игнорировать все JS файлы в client/dist_client/components, models, services, store
+client/dist_client/components/**/*.js
+client/dist_client/models/**/*.js
+client/dist_client/services/**/*.js
+client/dist_client/store/**/*.js
+
+# Игнорировать JS файлы в client/dist_client
+client/dist_client/*.js
+
+# Игнорировать временную папку temp_backup и все файлы с расширениями .md и .ubn
+temp_backup/
+*.md
+*.ubn
