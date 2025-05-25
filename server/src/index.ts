@@ -12,7 +12,8 @@ app.use(express.json());
 
 // GET /api/products — получение списка продуктов для клиента
 app.use('/api/products', productsRouter);
-// отдача статики из папки imagesProducts
+// Регистрация маршрута для статического сервиса изображений продуктов
+// Позволяет доступу к файлам в директории src/imagesProducts
 app.use('/imagesProducts', express.static(path.join(__dirname, '../../src/imagesProducts')));
 
 

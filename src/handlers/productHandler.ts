@@ -41,7 +41,9 @@ export const productHandler = async (
 
     for (const product of filteredProducts) {
       if (product.image_path) {
+        // проверяет наличие файла по указанному пути
         if (fs.existsSync(product.image_path)) {
+          // отправление фото если файл существует
           await bot.sendPhoto(chatId, fs.createReadStream(product.image_path));
         } else {
           await bot.sendMessage(chatId, "Фото не найдено на сервере.");
