@@ -1,6 +1,8 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-dotenv.config();
+
+const envServerPath = { path: 'server/.env.server' };
+dotenv.config(envServerPath);
 
 export class Database {
     private static instance: Pool;
@@ -9,11 +11,11 @@ export class Database {
     public static getInstance(): Pool {
         if (!Database.instance) {
             Database.instance = new Pool({
-                user: 'postgres',
-                host: 'localhost',
-                database: 'product_catalog',
+                user: process.env.DB_USER,
+                host: process.env.DB_HOST,
+                database: process.env.DB_NAME,
                 password: process.env.DB_PASSWORD,
-                port: 5433,
+                port: Number(process.env.DB_PORT),
             });
         }
         return Database.instance;
