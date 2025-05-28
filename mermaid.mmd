@@ -1,17 +1,32 @@
 sequenceDiagram
-    participant Пользователь Telegram
-    participant Telegram Bot
-    participant Клиент (React)
-    participant Сервер (Node.js)
-    participant База Данных (PostgreSQL)
-    participant Redux Store
+    %% --- Взаимодействие Telegram-пользователя с ботом ---
+    participant User as Пользователь Telegram
+    participant Bot as Telegram Bot
+    participant Server as Сервер (Node.js)
+    participant DB as База Данных (PostgreSQL)
+    participant Redux as Redux Store
 
-    %% Загрузка данных о продуктах (из БД -> Redux)
-    Пользователь Telegram->>Telegram Bot: Отправляет команду (например, /products)
-    Telegram Bot->>Сервер (Node.js): Запрос данных (через HTTP API)
-    Сервер (Node.js)->>База Данных (PostgreSQL): Запрос данных о продуктах
-    База Данных (PostgreSQL)-->>Сервер (Node.js): Данные о продуктах
-    Сервер (Node.js)->>Redux Store: Обновление данных о продуктах
-    Redux Store-->>Сервер (Node.js): Подтверждение обновления
-    Сервер (Node.js)-->>Telegram Bot: Ответ с данными о продуктах
-    Telegram Bot-->>Пользователь Telegram: Отображает продукты
+    %% Telegram user flow
+    User->>Bot: Отправляет команду (/products)
+    Bot->>Server: HTTP-запрос на получение продуктов
+    Server->>DB: SQL-запрос SELECT продуктов
+    DB-->>Server: Данные о продуктах
+    Server-->>Bot: Ответ с данными о продуктах
+    Bot-->>User: Отправляет список продуктов
+
+    %% React client flow
+    Client->>Server: HTTP GET /api/products
+    Server->>DB: SQL-запрос SELECT продуктов
+    DB-->>Server: Данные о продуктах
+    Server-->>Client: JSON с продуктами
+    Client->>Redux: Сохраняет продукты в хранилище
+    Redux-->>Client: Предоставляет данные компонентам
+
+    %% Загрузка файла с продуктами через клиент
+    Client->>Server: HTTP POST /api/products/upload (файл XLSX/CSV)
+    Server->>DB: Импортирует данные из файла
+    Server-->>Client: Ответ об успешной загрузке
+
+    %% Получение изображений продуктов
+    Client->>Server: HTTP GET /imagesProducts/:filename
+    Server-->>Client: Отправляет изображение
