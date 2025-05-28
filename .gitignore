@@ -54,6 +54,8 @@ client/dist_client/*.js
 
 // Игнорировать папки и файлы  
 temp_backup/
+# Игнорировать все md файлы, кроме README.md
 *.md
+!README.md
 *.ubn
 
