@@ -7,39 +7,11 @@ sequenceDiagram
     participant Redux Store
 
     %% Загрузка данных о продуктах (из БД -> Redux)
-    activate Пользователь Telegram
     Пользователь Telegram->>Telegram Bot: Отправляет команду (например, /products)
-    activate Telegram Bot
     Telegram Bot->>Сервер (Node.js): Запрос данных (через HTTP API)
-    activate Сервер (Node.js)
     Сервер (Node.js)->>База Данных (PostgreSQL): Запрос данных о продуктах
-    activate База Данных (PostgreSQL)
     База Данных (PostgreSQL)-->>Сервер (Node.js): Данные о продуктах
-    deactivate База Данных (PostgreSQL)
     Сервер (Node.js)->>Redux Store: Обновление данных о продуктах
-    activate Redux Store
     Redux Store-->>Сервер (Node.js): Подтверждение обновления
-    deactivate Redux Store
     Сервер (Node.js)-->>Telegram Bot: Ответ с данными о продуктах
-    deactivate Сервер (Node.js)
     Telegram Bot-->>Пользователь Telegram: Отображает продукты
-    deactivate Telegram Bot
-    deactivate Пользователь Telegram
-
-    %% Загрузка новых продуктов (CSV/XLSX)
-    Клиент (React)->>Сервер (Node.js): Загрузка CSV/XLSX файла с продуктами
-    activate Клиент (React)
-    activate Сервер (Node.js)
-    Сервер (Node.js)->>Сервер (Node.js): Парсинг CSV/XLSX
-    Сервер (Node.js)->>База Данных (PostgreSQL): Запись новых данных о продуктах
-    activate База Данных (PostgreSQL)
-    База Данных (PostgreSQL)-->>Сервер (Node.js): Подтверждение записи
-    deactivate База Данных (PostgreSQL)
-    Сервер (Node.js)->>Redux Store: Обновление данных о продуктах
-    activate Redux Store
-    Redux Store-->>Сервер (Node.js): Подтверждение обновления
-    deactivate Redux Store
-    Сервер (Node.js)-->>Клиент (React): Подтверждение загрузки
-    deactivate Сервер (Node.js)
-    Клиент (React) -->> Пользователь Telegram: Уведомление об успешной загрузке (опционально)
-    deactivate Клиент (React)
